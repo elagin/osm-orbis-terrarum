@@ -45,11 +45,16 @@ namespace orbis_terrarum
 
 			//this.Text = String.Format("Orbis Terrarum v.{0}", fvi.FileVersion);
 
-			string about = "'Orbis Terrarum' бесплатное и свободное приложение для использования карт из проекта OpenStreetMap в приложении OziExplorer." + Environment.NewLine + "Распространяется на основе лицензии GPL v2.0 по принципу 'как есть'." + Environment.NewLine + 
-				 " Автор не несёт НИКАКОЙ ответственности за любые действия пользователя использующего программу, вся ответственность за использование программой целиком и полностью ложиться на пользователя." +
-" Автор не несёт ответственности за любые аппаратные и/или программные ошибки возникающие при работе программы." +
-" Автор не несёт ответственности за не совпадения ожиданиям пользователя и функционалом программы.";
-			textBox1.Text = about;
+			string about = "OSM Orbis Terrarum - бесплатное и свободное приложение для использования карт проекта OpenStreetMap в приложении OziExplorer." + Environment.NewLine + "Распространяется на основе лицензии GPL v2.0 по принципу 'как есть'." + Environment.NewLine + Environment.NewLine +
+				"* Автор не несёт ответственности за любые действия пользователя использующего программу, вся ответственность за использование программой целиком и полностью ложиться на пользователя." + Environment.NewLine +
+"* Автор не несёт ответственности за любые аппаратные и/или программные ошибки возникающие при работе программы." + Environment.NewLine +
+"* Автор не несёт ответственности за не совпадения ожиданиям пользователя и функционалом программы.";
+			richTextBox1.Text = about;
+
+			richTextBox1.Select(0, 19);
+			Font currentFont = richTextBox1.SelectionFont;
+			Font bold = new Font(currentFont.Name, currentFont.Size + 2, FontStyle.Bold);
+			richTextBox1.SelectionFont = bold;
 		}
 
 		private void buttonClose_Click(object sender, EventArgs e)
@@ -75,6 +80,11 @@ namespace orbis_terrarum
 		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			Process.Start("http://www.gnu.org/licenses");
+		}
+
+		private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Process.Start("http://www.openstreetmap.org");
 		}
 	}
 }

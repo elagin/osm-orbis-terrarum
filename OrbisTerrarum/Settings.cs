@@ -28,6 +28,7 @@ using System.Xml;
 using System.Reflection;
 using System.IO;
 using System.Drawing;
+using System.Windows.Forms;
 
 public class MapSize
 {
@@ -158,6 +159,8 @@ public class Settings
 		}
 		catch (Exception ex)
 		{
+			string caption = "Произошла ошибка при загрузке файла настроек: " + _filename;
+			var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 	}
 
@@ -188,6 +191,8 @@ public class Settings
 		}
 		catch (Exception ex)
 		{
+			string caption = "Произошла ошибка при сохранении файла настроек: " + _filename;
+			var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 	}
 

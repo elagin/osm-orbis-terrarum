@@ -96,6 +96,9 @@ namespace orbis_terrarum
 			textBoxMapWidth.Text = Convert.ToString(settings.MapSize.Width);
 			textBoxMapHeight.Text = Convert.ToString(settings.MapSize.Height);
 
+			pictureBox1.Width = settings.MapSize.Width;
+			pictureBox1.Height = settings.MapSize.Height;
+
 			//Всегда в конце
 			calcMapProperty();
 		}
@@ -104,9 +107,7 @@ namespace orbis_terrarum
 		public MainForm()
 		{
 			InitializeComponent();
-
 			fillCtrls();
-			createPlace();
 		}
 
 		/// <summary>
@@ -137,23 +138,51 @@ namespace orbis_terrarum
 				_bmp = null;
 			try
 			{
-				pictureBox1.Width = getBoxMapWidth();
-				pictureBox1.Height = getBoxMapHeight();
-
-				tiles.pixelsSize.Width = pictureBox1.Width / _tileSize.X;
-				tiles.pixelsSize.Height = pictureBox1.Height / _tileSize.Y;
-
 				_bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height, PixelFormat.Format24bppRgb);
 				Rectangle bmpRect = new Rectangle(0, 0, _bmp.Width, _bmp.Height);
 				tiles.setBitmapRect(bmpRect);
+
+				int pX = 0;
+				int pY = 0;
+				using (var canvas = Graphics.FromImage(_bmp))
+				{
+					canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+					for (int y = 0; pY < tiles.pixelsSize.Height; y += _tileSize.Y, pY++)
+					{
+						for (int x = 0; pX < tiles.pixelsSize.Width; x += _tileSize.X, pX++)
+						{
+							canvas.DrawImage(tiles.getBitmap(pX, pY),
+								new Rectangle(x, y, _tileSize.X, _tileSize.Y),
+								new Rectangle(0, 0, _tileSize.X, _tileSize.Y),
+								GraphicsUnit.Pixel);
+						}
+						pX = 0; //Не забываем перевод строки
+					}
+					Point textPoint = new Point(pictureBox1.Width - 200, pictureBox1.Height - 20);
+					drawText(canvas, "«© Участники OpenStreetMap»", textPoint, 10);
+				}
 			}
 			catch (Exception ex)
 			{
-				const string caption = "Ошибка";
-				var result = MessageBox.Show(ex.Message + "\n" + ex.StackTrace, caption,
+				const string caption = "Ошибка при создании нового пространства";
+				var result = MessageBox.Show(ex.Message, caption,
 											 MessageBoxButtons.OK,
 											 MessageBoxIcon.Error);
 			}
+		}
+
+		/// <summary>
+		/// Определяет плитки, которые нужно загрузить</summary>
+		private Rectangle calcTiles()
+		{
+			// Индекс центральной плитки
+			PointF centerTile = Tools.worldToTilePos(settings.CentralPoint.Lon, settings.CentralPoint.Lat, settings.Zoom);
+
+			// Индекс первой плитки
+			PointF firstTile = new PointF(centerTile.X - (tiles.pixelsSize.Width / 2), centerTile.Y - (tiles.pixelsSize.Height / 2));
+
+			// Плитки для загрузки
+			return new Rectangle((int)firstTile.X, (int)firstTile.Y, tiles.pixelsSize.Width, tiles.pixelsSize.Height);
 		}
 
 		/// <summary>
@@ -162,42 +191,49 @@ namespace orbis_terrarum
 		{
 			try
 			{
-				SaveCtrls(); // Сохраняем состояние элементов UI.
-				createPlace(); // Создаем новое пространство
+				SaveCtrls();
+
+				// Изменяем размер pictureBox1
+				pictureBox1.Width = getBoxMapWidth();
+				pictureBox1.Height = getBoxMapHeight();
+
+				// Изменяем размеры карты в плитках
+				tiles.pixelsSize.Width = pictureBox1.Width / _tileSize.X;
+				tiles.pixelsSize.Height = pictureBox1.Height / _tileSize.Y;
+
+				// Создаем форму для загрузки данных.
+				using (FormDownload download = new FormDownload(settings.Zoom, calcTiles(), ref tiles))
+				{
+					DialogResult resDlg = download.ShowDialog();
+					if (download.ReturnValue1) // Если данные усешно загружены
+					{
+						createPlace();
+						labelMapSize.Text = String.Format("Размеры карты (м):\n {0:N0} x {1:N00}", tiles.mapSize.Width, tiles.mapSize.Height);
+						textBoxTopGps.Text = tiles.gpsRect.Y.ToString();
+						textBoxLeftGps.Text = tiles.gpsRect.X.ToString();
+						textBoxRightGps.Text = (tiles.gpsRect.X + tiles.gpsRect.Height).ToString();
+						textBoxBottomGps.Text = (tiles.gpsRect.Y + tiles.gpsRect.Width).ToString();
+
+						tiles.mapScale = (double)tiles.mapSize.Width / getBoxMapWidth();
+						labelMetPerPix.Text = String.Format("Метров на пиксел\n {0:N2}", tiles.mapScale);
+
+						buttonSaveMap.Enabled = true;
+					}
+				}
+				buttonDownload.Enabled = true;
+				pictureBox1.Refresh();
+			}
+			catch (FormatException ex)
+			{
+				string caption = "Ошибка при загрузке данных";
+				string msg = String.Format("{0} Пожалуйста, проверьте введенные данные.", ex.Message);
+				var result = MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			catch (Exception ex)
 			{
-				const string caption = "Ошибка";
-				var result = MessageBox.Show(ex.Message, caption,
-											 MessageBoxButtons.OK,
-											 MessageBoxIcon.Error);
+				string caption = "Ошибка при загрузке данных";
+				var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-			// Определяем
-			PointF res = Tools.worldToTilePos(settings.CentralPoint.Lon, settings.CentralPoint.Lat, settings.Zoom);
-			PointF centerTile = new PointF(res.X - (tiles.pixelsSize.Width / 2), res.Y - (tiles.pixelsSize.Height / 2));
-			Rectangle tilesRect = new Rectangle((int)centerTile.X, (int)centerTile.Y, tiles.pixelsSize.Width, tiles.pixelsSize.Height);
-
-			// Создаем форму для загрузки данных.
-			using (FormDownload download = new FormDownload(settings.Zoom, tilesRect, ref tiles))
-			{
-				DialogResult resDlg = download.ShowDialog();
-				if (download.ReturnValue1) // Если данные усешно загружены
-				{
-					createPlace();			// Создаем новое пространство
-					createBitmap();		// Склеиваем карту
-					labelMapSize.Text = String.Format("Размеры карты (м):\n {0:N0} x {1:N00}", tiles.mapSize.Width, tiles.mapSize.Height);
-					textBoxTopGps.Text = tiles.gpsRect.Y.ToString();
-					textBoxLeftGps.Text = tiles.gpsRect.X.ToString();
-					textBoxRightGps.Text = (tiles.gpsRect.X + tiles.gpsRect.Height).ToString();
-					textBoxBottomGps.Text = (tiles.gpsRect.Y + tiles.gpsRect.Width).ToString();
-
-					tiles.mapScale = (double)tiles.mapSize.Width / getBoxMapWidth();
-					labelMetPerPix.Text = String.Format("Метров на пиксел\n {0:N2}", tiles.mapScale);
-				}
-			}
-			buttonDownload.Enabled = true;
-			buttonSaveMap.Enabled = true;
-			pictureBox1.Refresh();
 		}
 
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -219,31 +255,6 @@ namespace orbis_terrarum
 
 		/// <summary>
 		// Склеивает карту из плиток.</summary>
-		private void createBitmap()
-		{
-			int pX = 0;
-			int pY = 0;
-			using (var canvas = Graphics.FromImage(_bmp))
-			{
-				canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-				for (int y = 0; pY < tiles.pixelsSize.Height; y += _tileSize.Y, pY++)
-				{
-					for (int x = 0; pX < tiles.pixelsSize.Width; x += _tileSize.X, pX++)
-					{
-						canvas.DrawImage(tiles.getBitmap(pX, pY),
-							new Rectangle(x, y, _tileSize.X, _tileSize.Y),
-							new Rectangle(0, 0, _tileSize.X, _tileSize.Y),
-							GraphicsUnit.Pixel);
-					}
-					pX = 0; //Не забываем перевод строки
-				}
-				Point textPoint = new Point(pictureBox1.Width - 200, pictureBox1.Height - 20);
-				drawText(canvas, "«© Участники OpenStreetMap»", textPoint, 10);
-			}
-		}
-
-		/// <summary>
-		// Склеивает карту из плиток.</summary>
 		private void drawTiles(Graphics lin, int xClip, int yClip, int WidthClip, int heightClip)
 		{
 			if (_bmp != null)
@@ -253,9 +264,10 @@ namespace orbis_terrarum
 					using (var canvas = Graphics.FromImage(_bmp))
 						lin.DrawImage(_bmp, 0, 0);
 				}
-				catch (Exception e)
+				catch (Exception ex)
 				{
-					int a = 0;
+					const string caption = "Произошла ошибка при склеивании карты";
+					var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
@@ -282,11 +294,19 @@ namespace orbis_terrarum
 		// Сохраняет карту в файлы.</summary>
 		private void buttonSaveMap_Click(object sender, EventArgs e)
 		{
-			string file_name = getFilename();
-			if (file_name.Length > 0)
+			try
 			{
-				_bmp.Save(file_name, ImageFormat.Png);
-				tiles.saveMapfile(file_name);
+				string file_name = getFilename();
+				if (file_name.Length > 0)
+				{
+					_bmp.Save(file_name, ImageFormat.Png);
+					tiles.saveMapfile(file_name);
+				}
+			}
+			catch (Exception ex)
+			{
+				const string caption = "Произошла ошибка при сохранении карты.";
+				var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -469,6 +489,7 @@ namespace orbis_terrarum
 		{
 			public string Name;
 			public int Value;
+
 			public ComboItem(string name, int value)
 			{
 				Name = name; Value = value;

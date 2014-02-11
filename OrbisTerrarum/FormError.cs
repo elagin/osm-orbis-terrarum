@@ -57,14 +57,11 @@ namespace orbis_terrarum
 				var result = MessageBox.Show("Сообщение успешно отправлено, спасибо за сотрудничество.", caption,
 											 MessageBoxButtons.OK,
 											 MessageBoxIcon.Information);
-			 
 			}
  
 			catch (Exception ex)
 			{
-				int a = 0;
 			}
-
 		}
 	}
 }

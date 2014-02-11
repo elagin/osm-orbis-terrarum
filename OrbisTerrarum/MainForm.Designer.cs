@@ -146,6 +146,7 @@
 			// 
 			this.textBoxMapWidth.Location = new System.Drawing.Point(39, 34);
 			this.textBoxMapWidth.Name = "textBoxMapWidth";
+			this.textBoxMapWidth.ReadOnly = true;
 			this.textBoxMapWidth.Size = new System.Drawing.Size(45, 20);
 			this.textBoxMapWidth.TabIndex = 9;
 			this.textBoxMapWidth.Text = "1024";
@@ -154,6 +155,7 @@
 			// 
 			this.textBoxMapHeight.Location = new System.Drawing.Point(39, 76);
 			this.textBoxMapHeight.Name = "textBoxMapHeight";
+			this.textBoxMapHeight.ReadOnly = true;
 			this.textBoxMapHeight.Size = new System.Drawing.Size(45, 20);
 			this.textBoxMapHeight.TabIndex = 10;
 			this.textBoxMapHeight.Text = "1024";
@@ -458,7 +460,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonSaveMap;
-        private System.Windows.Forms.Button btn_redraw;
         private System.Windows.Forms.ComboBox comboBoxZoom;
 		private System.Windows.Forms.Button buttonAbout;
 		private System.Windows.Forms.ComboBox comboBoxLat;

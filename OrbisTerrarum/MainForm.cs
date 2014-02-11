@@ -37,25 +37,25 @@ namespace orbis_terrarum
 		/// Размер одной плитки в пикселах.</summary>
 
 		/// <summary>
-		// Здесь храниться склееная карта.</summary>
+		/// Здесь храниться склееная карта.</summary>
 		static Point _tileSize = new Point(256, 256);
 		static Bitmap _bmp = null;
 
 		/// <summary>
-		// Максимальный размер карты в пикселах.</summary>
+		/// Максимальный размер карты в пикселах.</summary>
 		private Point _maxMapSize = new Point(_tileSize.X * 30, _tileSize.Y * 30);
 		private Point _startPoint;
 
 		/// <summary>
-		// Менеджер плиток.</summary>
-		private TileManager tiles = new TileManager(_tileSize);								// 
+		/// Менеджер плиток.</summary>
+		private TileManager tiles = new TileManager(_tileSize);								/// 
 
 		/// <summary>
-		// Хранит настройки.</summary>
+		/// Хранит настройки.</summary>
 		private Settings settings = new Settings("config", new Point(_tileSize.X * 5, _tileSize.Y * 5));	// Настройки
 
 		/// <summary>
-		// Настраивает элементы пользовательского интерфейса.</summary>
+		/// Настраивает элементы пользовательского интерфейса.</summary>
 		private void fillCtrls()
 		{
 			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -103,7 +103,7 @@ namespace orbis_terrarum
 			calcMapProperty();
 		}
 
-		// Конструктор формы
+		/// Конструктор формы
 		public MainForm()
 		{
 			InitializeComponent();
@@ -111,7 +111,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Возвращает ширину карты заданную пользователем.</summary>
+		/// Возвращает ширину карты заданную пользователем.</summary>
 		private int getBoxMapWidth()
 		{
 			if (textBoxMapWidth.Text.Length > 0)
@@ -121,7 +121,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Возвращает высоту карты заданную пользователем.</summary>
+		/// Возвращает высоту карты заданную пользователем.</summary>
 		private int getBoxMapHeight()
 		{
 			if (textBoxMapHeight.Text.Length > 0)
@@ -131,7 +131,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Создает новое пространство.</summary>
+		/// Создает новое пространство.</summary>
 		public void createPlace()
 		{
 			if (_bmp != null)
@@ -175,33 +175,33 @@ namespace orbis_terrarum
 		/// Определяет плитки, которые нужно загрузить</summary>
 		private Rectangle calcTiles()
 		{
-			// Индекс центральной плитки
+			/// Индекс центральной плитки
 			PointF centerTile = Tools.worldToTilePos(settings.CentralPoint.Lon, settings.CentralPoint.Lat, settings.Zoom);
 
-			// Индекс первой плитки
+			/// Индекс первой плитки
 			PointF firstTile = new PointF(centerTile.X - (tiles.pixelsSize.Width / 2), centerTile.Y - (tiles.pixelsSize.Height / 2));
 
-			// Плитки для загрузки
+			/// Плитки для загрузки
 			return new Rectangle((int)firstTile.X, (int)firstTile.Y, tiles.pixelsSize.Width, tiles.pixelsSize.Height);
 		}
 
 		/// <summary>
-		// Загружает карту.</summary>
+		/// Загружает карту.</summary>
 		private void buttonDownload_Click(object sender, EventArgs e)
 		{
 			try
 			{
 				SaveCtrls();
 
-				// Изменяем размер pictureBox1
+				/// Изменяем размер pictureBox1
 				pictureBox1.Width = getBoxMapWidth();
 				pictureBox1.Height = getBoxMapHeight();
 
-				// Изменяем размеры карты в плитках
+				/// Изменяем размеры карты в плитках
 				tiles.pixelsSize.Width = pictureBox1.Width / _tileSize.X;
 				tiles.pixelsSize.Height = pictureBox1.Height / _tileSize.Y;
 
-				// Создаем форму для загрузки данных.
+				/// Создаем форму для загрузки данных.
 				using (FormDownload download = new FormDownload(settings.Zoom, calcTiles(), ref tiles))
 				{
 					DialogResult resDlg = download.ShowDialog();
@@ -254,7 +254,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Склеивает карту из плиток.</summary>
+		/// Склеивает карту из плиток.</summary>
 		private void drawTiles(Graphics lin, int xClip, int yClip, int WidthClip, int heightClip)
 		{
 			if (_bmp != null)
@@ -278,7 +278,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Диалог возвращающий имя файла для сохранения файла.</summary>
+		/// Диалог возвращающий имя файла для сохранения файла.</summary>
 		private string getFilename()
 		{
 			SaveFileDialog dlg = new SaveFileDialog();
@@ -291,7 +291,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Сохраняет карту в файлы.</summary>
+		/// Сохраняет карту в файлы.</summary>
 		private void buttonSaveMap_Click(object sender, EventArgs e)
 		{
 			try
@@ -316,7 +316,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Предварительный расчет загружаемового объема.</summary>
+		/// Предварительный расчет загружаемового объема.</summary>
 		private void calcMapProperty()
 		{
 			int boxMapWidth = getBoxMapWidth() / _tileSize.X;
@@ -325,7 +325,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Уменьшает ширину карты.</summary>
+		/// Уменьшает ширину карты.</summary>
 		private void buttonMapWidthDec_Click(object sender, EventArgs e)
 		{
 			int boxMapWidth = getBoxMapWidth();
@@ -343,7 +343,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Увеличивает ширину карты.</summary>
+		/// Увеличивает ширину карты.</summary>
 		private void buttonMapWidthInc_Click(object sender, EventArgs e)
 		{
 			int boxMapWidth = getBoxMapWidth();
@@ -361,7 +361,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Уменьшает высоту карты.</summary>
+		/// Уменьшает высоту карты.</summary>
 		private void buttonMapHeightDec_Click(object sender, EventArgs e)
 		{
 			int boxMapHeight = getBoxMapHeight();
@@ -379,7 +379,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Увеличивает высоту карты.</summary>
+		/// Увеличивает высоту карты.</summary>
 		private void buttonMapHeightInc_Click(object sender, EventArgs e)
 		{
 			int boxMapHeight = getBoxMapHeight();
@@ -402,7 +402,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Сохраняет состояния элементов UI.</summary>
+		/// Сохраняет состояния элементов UI.</summary>
 		private void SaveCtrls()
 		{
 			double lat = 0;
@@ -430,7 +430,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Подготовка к закрытию формы.</summary>
+		/// Подготовка к закрытию формы.</summary>
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SaveCtrls();
@@ -484,7 +484,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Класс для хранения элементов ComboBox.</summary>
+		/// Класс для хранения элементов ComboBox.</summary>
 		private class ComboItem
 		{
 			public string Name;
@@ -498,7 +498,7 @@ namespace orbis_terrarum
 			public override string ToString()
 			{
 				/// <summary>
-				//  Generates the text shown in the combo box.</summary>
+				///  Generates the text shown in the combo box.</summary>
 				return Name;
 			}
 		}

@@ -286,7 +286,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Сохраняет map-файла.</summary>
+		/// Сохраняет map-файл.</summary>
 		// http://androzic.com/wiki/ru/OziExplorer/Maps.html
 		public void saveMapfile(string name)
 		{

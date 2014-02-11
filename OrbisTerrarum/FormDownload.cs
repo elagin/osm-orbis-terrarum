@@ -33,21 +33,21 @@ namespace orbis_terrarum
 	public partial class FormDownload : Form
 	{
 		/// <summary>
-		// Успешно ли завершена работа.</summary>
+		/// Успешно ли завершена работа.</summary>
 		public Boolean ReturnValue1 { get; set; }
 
 		/// <summary>
-		// Менеджер плиток.</summary>
+		/// Менеджер плиток.</summary>
 		private TileManager _tilesManager = null;
 		private Rectangle _tilesRect = new Rectangle(0, 0, 0, 0);
 		private int _zoom;
 
 		/// <summary>
-		// Таймер работы.</summary>
+		/// Таймер работы.</summary>
 		private Stopwatch sWatch = new Stopwatch();
 
 		/// <summary>
-		// Приключилась ли исключительная ситуация.</summary>
+		/// Приключилась ли исключительная ситуация.</summary>
 		private Boolean HaveException = false;
 
 		public FormDownload(int zoom, Rectangle tilesRect, ref TileManager tiles)
@@ -68,7 +68,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Задача вторичного потока.</summary>
+		/// Задача вторичного потока.</summary>
 		void bgw_DoWork(object sender, DoWorkEventArgs e)
 		{
 			ProgressBar1.Value = 0;
@@ -87,7 +87,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Событие изменения прогресс-бара.</summary>
+		/// Событие изменения прогресс-бара.</summary>
 		void bgw_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			ProgressBar1.Value = e.ProgressPercentage;
@@ -100,7 +100,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Вторичный поток работу закончил.</summary>
+		/// Вторичный поток работу закончил.</summary>
 		void bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			sWatch.Stop();						// Останавливаем таймер
@@ -110,7 +110,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		// Нажата кнопка остановить/закрыть.</summary>
+		/// Нажата кнопка остановить/закрыть.</summary>
 		private void buttonStop_Click(object sender, EventArgs e)
 		{
 			if (!bgw.IsBusy && !HaveException)	// Если работа не выполняется и не было исключения, это корректное завершение.

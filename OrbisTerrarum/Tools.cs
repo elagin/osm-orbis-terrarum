@@ -1,6 +1,6 @@
 ﻿/*
  * Orbis Terrarum. Export OpenStreetMap tiles to OziExplorer map
- * Copyright © 2014 Pavel Elagin
+ * Copyright © 2014 Pavel Elagin elagin.pasha@gmail.com
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

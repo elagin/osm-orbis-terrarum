@@ -48,6 +48,7 @@ namespace orbis_terrarum
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			this.buttonDownload = new System.Windows.Forms.Button();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -80,11 +81,14 @@ namespace orbis_terrarum
 			this.textBoxBottomGps = new System.Windows.Forms.TextBox();
 			this.labelTilesRect = new System.Windows.Forms.Label();
 			this.labelMetPerPix = new System.Windows.Forms.Label();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.mapCenteroolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
+			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// buttonDownload
@@ -420,11 +424,26 @@ namespace orbis_terrarum
 			this.labelMetPerPix.TabIndex = 23;
 			this.labelMetPerPix.Text = "Метров на пиксел:";
 			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mapCenteroolStripMenuItem});
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
+			// 
+			// mapCenteroolStripMenuItem
+			// 
+			this.mapCenteroolStripMenuItem.Name = "mapCenteroolStripMenuItem";
+			this.mapCenteroolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.mapCenteroolStripMenuItem.Text = "Центр карты";
+			this.mapCenteroolStripMenuItem.Click += new System.EventHandler(this.mapCenteroolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1022, 668);
+			this.ContextMenuStrip = this.contextMenuStrip1;
 			this.Controls.Add(this.labelMetPerPix);
 			this.Controls.Add(this.labelTilesRect);
 			this.Controls.Add(this.textBoxBottomGps);
@@ -452,6 +471,7 @@ namespace orbis_terrarum
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -491,6 +511,8 @@ namespace orbis_terrarum
 		private System.Windows.Forms.TextBox textBoxBottomGps;
 		private System.Windows.Forms.Label labelTilesRect;
 		private System.Windows.Forms.Label labelMetPerPix;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem mapCenteroolStripMenuItem;
     }
 }
 

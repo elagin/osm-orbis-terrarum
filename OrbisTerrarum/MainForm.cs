@@ -510,5 +510,15 @@ namespace orbis_terrarum
 				DialogResult resDlg = about.ShowDialog();
 			}
 		}
+
+		private void mapCenteroolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Point tmp = pictureBox1.PointToClient(System.Windows.Forms.Control.MousePosition);
+			float xPos = ((tiles.gpsRect.Width / pictureBox1.Width) * tmp.X) + tiles.gpsRect.Left;
+			float yPos = ((tiles.gpsRect.Height / pictureBox1.Height) * tmp.Y) + tiles.gpsRect.Top;
+
+			textBoxLat.Text = yPos.ToString();
+			textBoxLon.Text = xPos.ToString();
+		}
 	}
 }

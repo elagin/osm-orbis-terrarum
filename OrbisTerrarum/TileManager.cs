@@ -28,6 +28,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace orbis_terrarum
 {
@@ -274,15 +275,23 @@ namespace orbis_terrarum
 		/// Проверяет есть ли файл в кэше и не истек ли срок его хранения.</summary>
 		private Boolean isExpires(string fileName)
 		{
-			if (System.IO.File.Exists(fileName)) // Если файл сущетсвует
+			try
 			{
-				DateTime fileCreatedDate = System.IO.File.GetCreationTime(fileName);
-				TimeSpan myDateResult = DateTime.Now - fileCreatedDate;
-				return myDateResult.Days > 7; // старее 7 суток
+				if (System.IO.File.Exists(fileName)) // Если файл сущетсвует
+				{
+					DateTime fileCreatedDate = System.IO.File.GetCreationTime(fileName);
+					TimeSpan myDateResult = DateTime.Now - fileCreatedDate;
+					return myDateResult.Days > 7; // старее 7 суток
+				}
 			}
-			return true;
+			catch(Exception ex)
+			{
+				string msg = "При работе с файлом " + fileName + " в функции isExpires произошла ошибка: " + ex.Message;
+				var result = MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 			//var dt1 = DateTime.Parse("Fri, 31 Jan 2014 04:34:14 GMT");
 			//return dt1 < DateTime.Now;
+			return true;
 		}
 
 		/// <summary>

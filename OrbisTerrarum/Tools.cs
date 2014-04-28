@@ -187,14 +187,16 @@ namespace orbis_terrarum
 				double sec = res_sec / 60;
 				double min = (res_min + sec) / 60;
 				res = (res_grad + min) * mul;
-				return res;
+			}
+			catch (FormatException ex)
+			{
+				throw new FormatException(value);
 			}
 			catch (Exception ex)
 			{
-				string caption = "Произошла ошибка при преобразовании координаты: " + value + ". Пожалуйста, проверьте формат.";
-				var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return 0;
+				throw new Exception(value);
 			}
+			return res;
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace orbis_terrarum
 
 		/// <summary>
 		/// Максимальный размер карты в пикселах.</summary>
-		private Point _maxMapSize = new Point(_tileSize.X * 30, _tileSize.Y * 30);
+		private Point _maxMapSize = new Point(_tileSize.X * 50, _tileSize.Y * 50);
 		private Point _startPoint;
 
 		/// <summary>
@@ -229,14 +229,13 @@ namespace orbis_terrarum
 			}
 			catch (FormatException ex)
 			{
-				string caption = "Ошибка при загрузке данных";
-				string msg = String.Format("{0} Пожалуйста, проверьте введенные данные.", ex.Message);
-				var result = MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				string msg = "Произошла ошибка при преобразовании: " + ex.Message + ". Пожалуйста, проверьте формат.";
+				var result = MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			catch (Exception ex)
 			{
-				string caption = "Ошибка при загрузке данных";
-				var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				string msg = "При получении данных произошла ошибка: " + ex.Message;
+				MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 

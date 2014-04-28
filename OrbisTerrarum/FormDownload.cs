@@ -93,7 +93,7 @@ namespace orbis_terrarum
 			ProgressBar1.Value = e.ProgressPercentage;
 			DownloadState dState = (DownloadState)e.UserState;
 
-			labelTotalBytes.Text = String.Format("Получено байт: {0}", dState.BytesTotal);
+			labelTotalBytes.Text = String.Format("Получено килобайт: {0}", dState.BytesTotal / 1024);
 			labelTilesCnt.Text = String.Format("Получено плиток: {0}/{1}", dState.TailReady, dState.TailTotal);
 			TimeSpan tSpan = sWatch.Elapsed;
 			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");

@@ -54,11 +54,12 @@ namespace orbis_terrarum
 			this.labelTilesCnt = new System.Windows.Forms.Label();
 			this.bgw = new System.ComponentModel.BackgroundWorker();
 			this.labelTime = new System.Windows.Forms.Label();
+			this.labelSpeed = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// buttonStop
 			// 
-			this.buttonStop.Location = new System.Drawing.Point(312, 133);
+			this.buttonStop.Location = new System.Drawing.Point(312, 197);
 			this.buttonStop.Name = "buttonStop";
 			this.buttonStop.Size = new System.Drawing.Size(75, 23);
 			this.buttonStop.TabIndex = 0;
@@ -85,7 +86,7 @@ namespace orbis_terrarum
 			// labelTilesCnt
 			// 
 			this.labelTilesCnt.AutoSize = true;
-			this.labelTilesCnt.Location = new System.Drawing.Point(288, 84);
+			this.labelTilesCnt.Location = new System.Drawing.Point(64, 162);
 			this.labelTilesCnt.Name = "labelTilesCnt";
 			this.labelTilesCnt.Size = new System.Drawing.Size(99, 13);
 			this.labelTilesCnt.TabIndex = 3;
@@ -94,18 +95,28 @@ namespace orbis_terrarum
 			// labelTime
 			// 
 			this.labelTime.AutoSize = true;
-			this.labelTime.Location = new System.Drawing.Point(560, 84);
+			this.labelTime.Location = new System.Drawing.Point(64, 110);
 			this.labelTime.Name = "labelTime";
 			this.labelTime.Size = new System.Drawing.Size(46, 13);
 			this.labelTime.TabIndex = 4;
 			this.labelTime.Text = "Время :";
 			// 
+			// labelSpeed
+			// 
+			this.labelSpeed.AutoSize = true;
+			this.labelSpeed.Location = new System.Drawing.Point(64, 136);
+			this.labelSpeed.Name = "labelSpeed";
+			this.labelSpeed.Size = new System.Drawing.Size(58, 13);
+			this.labelSpeed.TabIndex = 5;
+			this.labelSpeed.Text = "Скорость:";
+			// 
 			// FormDownload
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(699, 168);
+			this.ClientSize = new System.Drawing.Size(699, 248);
 			this.ControlBox = false;
+			this.Controls.Add(this.labelSpeed);
 			this.Controls.Add(this.labelTime);
 			this.Controls.Add(this.labelTilesCnt);
 			this.Controls.Add(this.ProgressBar1);
@@ -130,5 +141,6 @@ namespace orbis_terrarum
         private System.Windows.Forms.Label labelTilesCnt;
         private System.ComponentModel.BackgroundWorker bgw;
         private System.Windows.Forms.Label labelTime;
+		private System.Windows.Forms.Label labelSpeed;
     }
 }

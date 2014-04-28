@@ -42,6 +42,8 @@ namespace orbis_terrarum
 		private Rectangle _tilesRect = new Rectangle(0, 0, 0, 0);
 		private int _zoom;
 
+		private int KBytesTotal;
+
 		/// <summary>
 		/// Таймер работы.</summary>
 		private Stopwatch sWatch = new Stopwatch();
@@ -86,6 +88,13 @@ namespace orbis_terrarum
 			}
 		}
 
+		private void updateStat()
+		{
+			TimeSpan tSpan = sWatch.Elapsed;
+			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
+			labelSpeed.Text = "Скорость: " + Convert.ToString((int)(KBytesTotal / tSpan.TotalSeconds)) + " кбайт./сек.";
+		}
+
 		/// <summary>
 		/// Событие изменения прогресс-бара.</summary>
 		void bgw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -93,10 +102,14 @@ namespace orbis_terrarum
 			ProgressBar1.Value = e.ProgressPercentage;
 			DownloadState dState = (DownloadState)e.UserState;
 
-			labelTotalBytes.Text = String.Format("Получено килобайт: {0}", dState.BytesTotal / 1024);
+			KBytesTotal = (int)dState.BytesTotal / 1024;
+
+			labelTotalBytes.Text = String.Format("Получено кбайт: {0}", KBytesTotal);
 			labelTilesCnt.Text = String.Format("Получено плиток: {0}/{1}", dState.TailReady, dState.TailTotal);
-			TimeSpan tSpan = sWatch.Elapsed;
+			updateStat();
+/*			TimeSpan tSpan = sWatch.Elapsed;
 			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
+			labelSpeed.Text = "Скорость: " + Convert.ToString(KBytesTotal / tSpan.TotalSeconds) + "кбайт./сек.";*/
 		}
 
 		/// <summary>
@@ -105,8 +118,10 @@ namespace orbis_terrarum
 		{
 			sWatch.Stop();						// Останавливаем таймер
 			buttonStop.Text = "Закрыть";		// Меняем надпись на кнопке
-			TimeSpan tSpan = sWatch.Elapsed;
+			updateStat();
+/*			TimeSpan tSpan = sWatch.Elapsed;
 			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
+			labelSpeed.Text = "Скорость: " + Convert.ToString(KBytesTotal / tSpan.TotalSeconds) + "кбайт./сек.";*/
 		}
 
 		/// <summary>

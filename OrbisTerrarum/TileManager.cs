@@ -53,7 +53,11 @@ namespace orbis_terrarum
 	{
 		public Tile(string name)
 		{
-			Bmp = new Bitmap(name);
+			// Устранена блокировка открытых файлов.
+			using (var tmp = new Bitmap(name))
+			{
+				Bmp = new Bitmap(tmp);
+			}
 			parceName(name);
 		}
 
@@ -203,6 +207,11 @@ namespace orbis_terrarum
 										System.IO.Directory.CreateDirectory(path);
 										System.IO.File.WriteAllBytes(file_name, fileBytes);
 									}
+									catch (Exception ex)
+									{
+										string msg = "При работе функции downloadTiles произошла ошибка: " + ex.Message;
+										var result = MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									}
 									_dState.BytesTotal += Convert.ToUInt64(wc.ResponseHeaders[HttpResponseHeader.ContentLength]);
 								}
 							}
@@ -279,12 +288,11 @@ namespace orbis_terrarum
 			{
 				if (System.IO.File.Exists(fileName)) // Если файл сущетсвует
 				{
-					DateTime fileCreatedDate = System.IO.File.GetCreationTime(fileName);
-					TimeSpan myDateResult = DateTime.Now - fileCreatedDate;
+					TimeSpan myDateResult = DateTime.Now - File.GetLastWriteTime(fileName);
 					return myDateResult.Days > 7; // старее 7 суток
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				string msg = "При работе с файлом " + fileName + " в функции isExpires произошла ошибка: " + ex.Message;
 				var result = MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -389,7 +397,7 @@ namespace orbis_terrarum
 		{
 			Bitmap bmp404 = new Bitmap(_tileSize.X, _tileSize.Y);
 			Point p = new Point(_tileSize.X / 2, _tileSize.Y / 2);
-			
+
 			Pen redPen = new Pen(Color.Red, 1);
 			using (var canvas = Graphics.FromImage(bmp404))
 			{

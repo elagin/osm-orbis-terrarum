@@ -88,6 +88,8 @@ namespace orbis_terrarum
 			}
 		}
 
+		/// <summary>
+		/// Обновляет время и скорость.</summary>
 		private void updateStat()
 		{
 			TimeSpan tSpan = sWatch.Elapsed;
@@ -107,9 +109,6 @@ namespace orbis_terrarum
 			labelTotalBytes.Text = String.Format("Получено кбайт: {0}", KBytesTotal);
 			labelTilesCnt.Text = String.Format("Получено плиток: {0}/{1}", dState.TailReady, dState.TailTotal);
 			updateStat();
-/*			TimeSpan tSpan = sWatch.Elapsed;
-			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
-			labelSpeed.Text = "Скорость: " + Convert.ToString(KBytesTotal / tSpan.TotalSeconds) + "кбайт./сек.";*/
 		}
 
 		/// <summary>
@@ -119,9 +118,6 @@ namespace orbis_terrarum
 			sWatch.Stop();						// Останавливаем таймер
 			buttonStop.Text = "Закрыть";		// Меняем надпись на кнопке
 			updateStat();
-/*			TimeSpan tSpan = sWatch.Elapsed;
-			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
-			labelSpeed.Text = "Скорость: " + Convert.ToString(KBytesTotal / tSpan.TotalSeconds) + "кбайт./сек.";*/
 		}
 
 		/// <summary>

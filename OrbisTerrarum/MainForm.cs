@@ -74,24 +74,28 @@ namespace orbis_terrarum
 
 			comboBoxZoom.SelectedIndex = settings.Zoom - 1;
 
-			if (settings.CentralPoint.Lat > 0)
-				comboBoxLat.SelectedIndex = 0;
-			else
+			// Есть минус, ставим букву и минус выкидываем
+			if (settings.CentralPoint.Lat[0] == '-')
 			{
 				comboBoxLat.SelectedIndex = 1;
-				settings.CentralPoint.Lat = settings.CentralPoint.Lat * -1;
+				settings.CentralPoint.Lat = settings.CentralPoint.Lat.Remove(0, 1);
+				//settings.CentralPoint.Lat = settings.CentralPoint.Lat * -1;
 			}
-
-			if (settings.CentralPoint.Lon > 0)
-				comboBoxLon.SelectedIndex = 0;
 			else
+				comboBoxLat.SelectedIndex = 0;
+
+			// Есть минус, ставим букву и минус выкидываем
+			if (settings.CentralPoint.Lon[0] == '-')
 			{
 				comboBoxLon.SelectedIndex = 1;
-				settings.CentralPoint.Lon = settings.CentralPoint.Lon * -1;
+				settings.CentralPoint.Lon = settings.CentralPoint.Lon.Remove(0, 1);
+				//settings.CentralPoint.Lon = settings.CentralPoint.Lon * -1;
 			}
+			else
+				comboBoxLon.SelectedIndex = 0;
 
-			textBoxLat.Text = Convert.ToString(settings.CentralPoint.Lat);
-			textBoxLon.Text = Convert.ToString(settings.CentralPoint.Lon);
+			textBoxLat.Text = settings.CentralPoint.Lat;
+			textBoxLon.Text = settings.CentralPoint.Lon;
 
 			textBoxMapWidth.Text = Convert.ToString(settings.MapSize.Width);
 			textBoxMapHeight.Text = Convert.ToString(settings.MapSize.Height);
@@ -405,25 +409,16 @@ namespace orbis_terrarum
 		/// Сохраняет состояния элементов UI.</summary>
 		private void SaveCtrls()
 		{
-			double lat = 0;
-			double lon = 0;
+			if (comboBoxLat.SelectedIndex == 0)
+				settings.CentralPoint.Lat = textBoxLat.Text;
+			else
+				settings.CentralPoint.Lat = "-" + textBoxLat.Text;
 
-			if (textBoxLat.Text.Length > 0)
-			{
-				lat = Convert.ToDouble(textBoxLat.Text);
-				if (comboBoxLat.SelectedIndex == 0)
-					settings.CentralPoint.Lat = (float)lat;
-				else
-					settings.CentralPoint.Lat = -(float)lat;
-			}
-			if (textBoxLon.Text.Length > 0)
-			{
-				lon = Convert.ToDouble(textBoxLon.Text);
-				if (comboBoxLon.SelectedIndex == 0)
-					settings.CentralPoint.Lon = (float)lon;
-				else
-					settings.CentralPoint.Lon = -(float)lon;
-			}
+			if (comboBoxLon.SelectedIndex == 0)
+				settings.CentralPoint.Lon = textBoxLon.Text;
+			else
+				settings.CentralPoint.Lon = "-" + textBoxLon.Text;
+
 			settings.Zoom = getZoom();
 			settings.MapSize.Width = getBoxMapWidth();
 			settings.MapSize.Height = getBoxMapHeight();

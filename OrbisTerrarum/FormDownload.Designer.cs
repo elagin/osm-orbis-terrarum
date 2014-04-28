@@ -105,6 +105,7 @@ namespace orbis_terrarum
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(699, 168);
+			this.ControlBox = false;
 			this.Controls.Add(this.labelTime);
 			this.Controls.Add(this.labelTilesCnt);
 			this.Controls.Add(this.ProgressBar1);

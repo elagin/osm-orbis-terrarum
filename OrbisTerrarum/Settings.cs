@@ -58,28 +58,28 @@ public class MapSize
 	}
 }
 
-public class GpsPoint
+public class SettingsGpsPoint
 {
-	private float _lat;
-	private float _lon;
+	private string _lat;
+	private string _lon;
 
-	public GpsPoint()
+	public SettingsGpsPoint()
 	{
 	}
 
-	public GpsPoint(float lat, float lon)
+	public SettingsGpsPoint(string lat, string lon)
 	{
-		_lat = lat;
-		_lon = lon;
+		_lat = lat.Trim();
+		_lon = lon.Trim();
 	}
 
-	public float Lat
+	public string Lat
 	{
 		get { return _lat; }
 		set { _lat = value; }
 	}
 
-	public float Lon
+	public string Lon
 	{
 		get { return _lon; }
 		set { _lon = value; }
@@ -91,7 +91,7 @@ public class Settings
 	private MapSize _mapSize;
 	private string _filename;
 	private int _zoom;
-	private GpsPoint _centralPoint;
+	private SettingsGpsPoint _centralPoint;
 
 	private Point _tileSize;
 
@@ -101,7 +101,7 @@ public class Settings
 		set { _mapSize = value; }
 	}
 
-	public GpsPoint CentralPoint
+	public SettingsGpsPoint CentralPoint
 	{
 		get { return _centralPoint; }
 		set { _centralPoint = value; }
@@ -199,7 +199,7 @@ public class Settings
 	private void SetDefault()
 	{
 		this._zoom = 15;
-		this._centralPoint = new GpsPoint(1,1);
+		this._centralPoint = new SettingsGpsPoint("1", "1");
 		this._mapSize = new MapSize(_tileSize.X, _tileSize.Y);
 	}
 

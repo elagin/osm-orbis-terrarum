@@ -45,6 +45,7 @@ namespace orbis_terrarum
 		public int TailTotal { get; set; }
 		public int TailReady { get; set; }
 		public UInt64 BytesTotal { get; set; }
+		public string FileName { get; set; }
 	}
 
 	/// <summary>
@@ -53,7 +54,7 @@ namespace orbis_terrarum
 	{
 		public Tile(string name)
 		{
-			// Устранена блокировка открытых файлов.
+			// Устраняет блокировку открытых файлов.
 			using (var tmp = new Bitmap(name))
 			{
 				Bmp = new Bitmap(tmp);
@@ -213,6 +214,7 @@ namespace orbis_terrarum
 										var result = MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									}
 									_dState.BytesTotal += Convert.ToUInt64(wc.ResponseHeaders[HttpResponseHeader.ContentLength]);
+									_dState.FileName = file_name;
 								}
 							}
 							catch (WebException we)

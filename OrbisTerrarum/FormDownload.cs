@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -42,7 +43,25 @@ namespace orbis_terrarum
 		private Rectangle _tilesRect = new Rectangle(0, 0, 0, 0);
 		private int _zoom;
 
-		private int KBytesTotal;
+		/// <summary>
+		/// Всего скачано байт.</summary>
+		private int _bytesTotal;
+
+		/// <summary>
+		/// Сколько плиток нужно скачать.</summary>
+		private int _tilesRemained;
+
+		/// <summary>
+		/// Плиток скачено.</summary>
+		private int _tilesReady;
+
+		/// <summary>
+		/// Имя файла последней скачанной плитки.</summary>
+		private string _fileName = "";
+
+		/// <summary>
+		/// Изображение последней скачанной плитки.</summary>
+		private Bitmap _bmp = null;
 
 		/// <summary>
 		/// Таймер работы.</summary>
@@ -60,6 +79,7 @@ namespace orbis_terrarum
 			_zoom = zoom;
 			_tilesRect = tilesRect;
 			_tilesManager = tiles;
+			pictureBoxPreview.SizeMode = PictureBoxSizeMode.StretchImage;
 
 			bgw.DoWork += new DoWorkEventHandler(bgw_DoWork);
 			bgw.ProgressChanged += new ProgressChangedEventHandler(bgw_ProgressChanged);
@@ -81,20 +101,47 @@ namespace orbis_terrarum
 			catch (Exception ex)
 			{
 				const string caption = "Ошибка";
-				var result = MessageBox.Show(ex.Message, caption,
-											 MessageBoxButtons.OK,
-											 MessageBoxIcon.Error);
+				var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				HaveException = true;
 			}
 		}
 
 		/// <summary>
-		/// Обновляет время и скорость.</summary>
+		/// Обновляет статистику.</summary>
 		private void updateStat()
 		{
 			TimeSpan tSpan = sWatch.Elapsed;
-			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
-			labelSpeed.Text = "Скорость: " + Convert.ToString((int)(KBytesTotal / tSpan.TotalSeconds)) + " кбайт./сек.";
+
+			//примерно байт в плитке
+			double bpt = _bytesTotal / _tilesReady;
+
+			//примрно байт всего нужно скачать
+			double totalBytesRemaind = _tilesRemained * bpt;
+
+			//примерная средняя скорость
+			double bps = _bytesTotal / tSpan.TotalSeconds;
+
+			//секунд осталось работать
+			double secondsRemained = totalBytesRemaind / bps;
+			TimeSpan timeRemained = new TimeSpan(0, 0, (int)secondsRemained);
+
+			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss") + ", осталось: " + timeRemained.ToString(@"hh\:mm\:ss");
+			labelSpeed.Text = String.Format("Скорость: {0:N0} кбайт./сек.", _bytesTotal / 1024 / tSpan.TotalSeconds);
+			labelTotalBytes.Text = String.Format("Получено кбайт: {0:N0}, осталось: {1:N0}", _bytesTotal / 1024, totalBytesRemaind / 1024);
+			labelTilesCnt.Text = String.Format("Плитки: {0}, осталось: {1}", _tilesReady, _tilesRemained);
+
+			if (_fileName != null && _fileName.Length > 0)
+			{
+				if (_bmp != null)
+					_bmp.Dispose();
+
+				// Устраняет блокировку открытых файлов.
+				using (var tmp = new Bitmap(_fileName))
+				{
+					_bmp = new Bitmap(tmp);
+					pictureBoxPreview.Image = (Image)_bmp;
+				}
+			}
 		}
 
 		/// <summary>
@@ -104,10 +151,10 @@ namespace orbis_terrarum
 			ProgressBar1.Value = e.ProgressPercentage;
 			DownloadState dState = (DownloadState)e.UserState;
 
-			KBytesTotal = (int)dState.BytesTotal / 1024;
-
-			labelTotalBytes.Text = String.Format("Получено кбайт: {0}", KBytesTotal);
-			labelTilesCnt.Text = String.Format("Получено плиток: {0}/{1}", dState.TailReady, dState.TailTotal);
+			_bytesTotal = (int)dState.BytesTotal;
+			_fileName = dState.FileName;
+			_tilesReady = dState.TailReady;
+			_tilesRemained = dState.TailTotal - dState.TailReady;
 			updateStat();
 		}
 
@@ -115,9 +162,12 @@ namespace orbis_terrarum
 		/// Вторичный поток работу закончил.</summary>
 		void bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			TimeSpan tSpan = sWatch.Elapsed;
 			sWatch.Stop();						// Останавливаем таймер
+			labelTime.Text = "Время: " + tSpan.ToString(@"hh\:mm\:ss");
+			labelTilesCnt.Text = String.Format("Плитки: {0}", _tilesReady);
+			labelTotalBytes.Text = String.Format("Получено кбайт: {0:N0}", _bytesTotal / 1024);
 			buttonStop.Text = "Закрыть";		// Меняем надпись на кнопке
-			updateStat();
 		}
 
 		/// <summary>
@@ -126,6 +176,8 @@ namespace orbis_terrarum
 		{
 			if (!bgw.IsBusy && !HaveException)	// Если работа не выполняется и не было исключения, это корректное завершение.
 				ReturnValue1 = true;			// Устанавливаем соответсвующий флаг.
+			if (_bmp != null)
+				_bmp.Dispose();
 			this.Close();
 		}
 	}

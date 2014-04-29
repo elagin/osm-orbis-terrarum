@@ -55,11 +55,13 @@ namespace orbis_terrarum
 			this.bgw = new System.ComponentModel.BackgroundWorker();
 			this.labelTime = new System.Windows.Forms.Label();
 			this.labelSpeed = new System.Windows.Forms.Label();
+			this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// buttonStop
 			// 
-			this.buttonStop.Location = new System.Drawing.Point(312, 197);
+			this.buttonStop.Location = new System.Drawing.Point(511, 128);
 			this.buttonStop.Name = "buttonStop";
 			this.buttonStop.Size = new System.Drawing.Size(75, 23);
 			this.buttonStop.TabIndex = 0;
@@ -70,7 +72,7 @@ namespace orbis_terrarum
 			// labelTotalBytes
 			// 
 			this.labelTotalBytes.AutoSize = true;
-			this.labelTotalBytes.Location = new System.Drawing.Point(64, 84);
+			this.labelTotalBytes.Location = new System.Drawing.Point(155, 102);
 			this.labelTotalBytes.Name = "labelTotalBytes";
 			this.labelTotalBytes.Size = new System.Drawing.Size(84, 13);
 			this.labelTotalBytes.TabIndex = 1;
@@ -80,13 +82,13 @@ namespace orbis_terrarum
 			// 
 			this.ProgressBar1.Location = new System.Drawing.Point(12, 47);
 			this.ProgressBar1.Name = "ProgressBar1";
-			this.ProgressBar1.Size = new System.Drawing.Size(675, 23);
+			this.ProgressBar1.Size = new System.Drawing.Size(574, 23);
 			this.ProgressBar1.TabIndex = 2;
 			// 
 			// labelTilesCnt
 			// 
 			this.labelTilesCnt.AutoSize = true;
-			this.labelTilesCnt.Location = new System.Drawing.Point(64, 162);
+			this.labelTilesCnt.Location = new System.Drawing.Point(155, 180);
 			this.labelTilesCnt.Name = "labelTilesCnt";
 			this.labelTilesCnt.Size = new System.Drawing.Size(99, 13);
 			this.labelTilesCnt.TabIndex = 3;
@@ -95,7 +97,7 @@ namespace orbis_terrarum
 			// labelTime
 			// 
 			this.labelTime.AutoSize = true;
-			this.labelTime.Location = new System.Drawing.Point(64, 110);
+			this.labelTime.Location = new System.Drawing.Point(155, 128);
 			this.labelTime.Name = "labelTime";
 			this.labelTime.Size = new System.Drawing.Size(46, 13);
 			this.labelTime.TabIndex = 4;
@@ -104,18 +106,27 @@ namespace orbis_terrarum
 			// labelSpeed
 			// 
 			this.labelSpeed.AutoSize = true;
-			this.labelSpeed.Location = new System.Drawing.Point(64, 136);
+			this.labelSpeed.Location = new System.Drawing.Point(155, 154);
 			this.labelSpeed.Name = "labelSpeed";
 			this.labelSpeed.Size = new System.Drawing.Size(58, 13);
 			this.labelSpeed.TabIndex = 5;
 			this.labelSpeed.Text = "Скорость:";
 			// 
+			// pictureBox1
+			// 
+			this.pictureBoxPreview.Location = new System.Drawing.Point(12, 86);
+			this.pictureBoxPreview.Name = "pictureBox1";
+			this.pictureBoxPreview.Size = new System.Drawing.Size(128, 128);
+			this.pictureBoxPreview.TabIndex = 6;
+			this.pictureBoxPreview.TabStop = false;
+			// 
 			// FormDownload
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(699, 248);
+			this.ClientSize = new System.Drawing.Size(598, 248);
 			this.ControlBox = false;
+			this.Controls.Add(this.pictureBoxPreview);
 			this.Controls.Add(this.labelSpeed);
 			this.Controls.Add(this.labelTime);
 			this.Controls.Add(this.labelTilesCnt);
@@ -128,6 +139,7 @@ namespace orbis_terrarum
 			this.Name = "FormDownload";
 			this.ShowIcon = false;
 			this.Text = "Загрузка данных";
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -142,5 +154,6 @@ namespace orbis_terrarum
         private System.ComponentModel.BackgroundWorker bgw;
         private System.Windows.Forms.Label labelTime;
 		private System.Windows.Forms.Label labelSpeed;
+		private System.Windows.Forms.PictureBox pictureBoxPreview;
     }
 }

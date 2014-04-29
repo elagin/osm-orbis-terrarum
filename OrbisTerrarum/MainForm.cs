@@ -43,7 +43,7 @@ namespace orbis_terrarum
 
 		/// <summary>
 		/// Максимальный размер карты в пикселах.</summary>
-		private Point _maxMapSize = new Point(_tileSize.X * 50, _tileSize.Y * 50);
+		private Point _maxMapSize = new Point(_tileSize.X * 43, _tileSize.Y * 43);
 		private Point _startPoint;
 
 		/// <summary>

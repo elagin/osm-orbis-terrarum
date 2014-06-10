@@ -115,7 +115,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		/// Возвращает ширину карты заданную пользователем.</summary>
+		/// Возвращает ширину карты (в пикселах) заданную пользователем.</summary>
 		private int getBoxMapWidth()
 		{
 			if (textBoxMapWidth.Text.Length > 0)
@@ -125,7 +125,7 @@ namespace orbis_terrarum
 		}
 
 		/// <summary>
-		/// Возвращает высоту карты заданную пользователем.</summary>
+		/// Возвращает высоту карты (в пикселах) заданную пользователем.</summary>
 		private int getBoxMapHeight()
 		{
 			if (textBoxMapHeight.Text.Length > 0)
@@ -212,7 +212,7 @@ namespace orbis_terrarum
 					if (download.ReturnValue1) // Если данные усешно загружены
 					{
 						createPlace();
-						labelMapSize.Text = String.Format("Размеры карты (м):\n {0:N0} x {1:N00}", tiles.mapSize.Width, tiles.mapSize.Height);
+						showMapSize();
 						textBoxTopGps.Text = tiles.gpsRect.Y.ToString();
 						textBoxLeftGps.Text = tiles.gpsRect.X.ToString();
 						textBoxRightGps.Text = (tiles.gpsRect.X + tiles.gpsRect.Height).ToString();
@@ -237,6 +237,11 @@ namespace orbis_terrarum
 				string msg = "При получении данных произошла ошибка: " + ex.Message;
 				MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+		}
+
+		private void showMapSize()
+		{
+			labelMapSize.Text = String.Format("Размеры карты (м):\n {0:N0} x {1:N00}", tiles.mapSize.Width, tiles.mapSize.Height);
 		}
 
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -325,6 +330,10 @@ namespace orbis_terrarum
 			int boxMapWidth = getBoxMapWidth() / _tileSize.X;
 			int boxMapHeight = getBoxMapHeight() / _tileSize.Y;
 			labelTilesRect.Text = String.Format("Плитки:\n {0} x {1} = {2}", boxMapWidth, boxMapHeight, boxMapWidth * boxMapHeight);
+
+			tiles.mapSize.Width = getBoxMapWidth() * (int)tiles.mapScale;
+			tiles.mapSize.Height = getBoxMapHeight() * (int)tiles.mapScale;
+			showMapSize();
 		}
 
 		/// <summary>

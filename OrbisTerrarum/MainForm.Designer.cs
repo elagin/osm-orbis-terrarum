@@ -53,6 +53,7 @@ namespace orbis_terrarum
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusDimensions = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.textBoxLat = new System.Windows.Forms.TextBox();
 			this.textBoxLon = new System.Windows.Forms.TextBox();
@@ -75,26 +76,28 @@ namespace orbis_terrarum
 			this.buttonSaveMap = new System.Windows.Forms.Button();
 			this.buttonAbout = new System.Windows.Forms.Button();
 			this.labelMapSize = new System.Windows.Forms.Label();
-			this.textBoxTopGps = new System.Windows.Forms.TextBox();
-			this.textBoxLeftGps = new System.Windows.Forms.TextBox();
-			this.textBoxRightGps = new System.Windows.Forms.TextBox();
-			this.textBoxBottomGps = new System.Windows.Forms.TextBox();
 			this.labelTilesRect = new System.Windows.Forms.Label();
 			this.labelMetPerPix = new System.Windows.Forms.Label();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.mapCenteroolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.comboBoxPreset = new System.Windows.Forms.ComboBox();
+			this.buttonAddPreset = new System.Windows.Forms.Button();
+			this.buttonDeletePreset = new System.Windows.Forms.Button();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.buttonEditPreset = new System.Windows.Forms.Button();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.statusStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
+			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// buttonDownload
 			// 
 			this.buttonDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonDownload.Location = new System.Drawing.Point(28, 113);
+			this.buttonDownload.Location = new System.Drawing.Point(987, 424);
 			this.buttonDownload.Name = "buttonDownload";
 			this.buttonDownload.Size = new System.Drawing.Size(75, 23);
 			this.buttonDownload.TabIndex = 1;
@@ -104,14 +107,14 @@ namespace orbis_terrarum
 			// 
 			// panel1
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.AutoScroll = true;
 			this.panel1.Controls.Add(this.pictureBox1);
 			this.panel1.Location = new System.Drawing.Point(13, 13);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(866, 630);
+			this.panel1.Size = new System.Drawing.Size(938, 682);
 			this.panel1.TabIndex = 2;
 			this.panel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel1_Scroll);
 			// 
@@ -136,17 +139,24 @@ namespace orbis_terrarum
 			// statusStrip1
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusDimensions,
             this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 646);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 698);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(1022, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(1094, 22);
 			this.statusStrip1.TabIndex = 3;
 			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusDimensions
+			// 
+			this.toolStripStatusDimensions.Name = "toolStripStatusDimensions";
+			this.toolStripStatusDimensions.Size = new System.Drawing.Size(25, 17);
+			this.toolStripStatusDimensions.Text = "0x0";
 			// 
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(24, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(25, 17);
 			this.toolStripStatusLabel1.Text = "0x0";
 			// 
 			// textBoxLat
@@ -239,9 +249,9 @@ namespace orbis_terrarum
 			this.groupBox1.Controls.Add(this.label1);
 			this.groupBox1.Controls.Add(this.textBoxLat);
 			this.groupBox1.Controls.Add(this.textBoxLon);
-			this.groupBox1.Location = new System.Drawing.Point(885, 12);
+			this.groupBox1.Location = new System.Drawing.Point(957, 12);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(125, 159);
+			this.groupBox1.Size = new System.Drawing.Size(125, 148);
 			this.groupBox1.TabIndex = 15;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Карта";
@@ -302,7 +312,6 @@ namespace orbis_terrarum
 			// 
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox2.Controls.Add(this.label5);
-			this.groupBox2.Controls.Add(this.buttonDownload);
 			this.groupBox2.Controls.Add(this.label4);
 			this.groupBox2.Controls.Add(this.buttonMapHeightInc);
 			this.groupBox2.Controls.Add(this.textBoxMapHeight);
@@ -310,9 +319,9 @@ namespace orbis_terrarum
 			this.groupBox2.Controls.Add(this.textBoxMapWidth);
 			this.groupBox2.Controls.Add(this.buttonMapWidthInc);
 			this.groupBox2.Controls.Add(this.buttonMapWidthDec);
-			this.groupBox2.Location = new System.Drawing.Point(885, 177);
+			this.groupBox2.Location = new System.Drawing.Point(957, 166);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(125, 150);
+			this.groupBox2.Size = new System.Drawing.Size(125, 107);
 			this.groupBox2.TabIndex = 15;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Изображение";
@@ -339,7 +348,7 @@ namespace orbis_terrarum
 			// 
 			this.buttonSaveMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonSaveMap.Enabled = false;
-			this.buttonSaveMap.Location = new System.Drawing.Point(913, 333);
+			this.buttonSaveMap.Location = new System.Drawing.Point(987, 453);
 			this.buttonSaveMap.Name = "buttonSaveMap";
 			this.buttonSaveMap.Size = new System.Drawing.Size(75, 23);
 			this.buttonSaveMap.TabIndex = 6;
@@ -350,7 +359,7 @@ namespace orbis_terrarum
 			// buttonAbout
 			// 
 			this.buttonAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonAbout.Location = new System.Drawing.Point(913, 362);
+			this.buttonAbout.Location = new System.Drawing.Point(987, 482);
 			this.buttonAbout.Name = "buttonAbout";
 			this.buttonAbout.Size = new System.Drawing.Size(75, 23);
 			this.buttonAbout.TabIndex = 16;
@@ -362,53 +371,17 @@ namespace orbis_terrarum
 			// 
 			this.labelMapSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelMapSize.AutoSize = true;
-			this.labelMapSize.Location = new System.Drawing.Point(882, 532);
+			this.labelMapSize.Location = new System.Drawing.Point(954, 555);
 			this.labelMapSize.Name = "labelMapSize";
 			this.labelMapSize.Size = new System.Drawing.Size(108, 13);
 			this.labelMapSize.TabIndex = 17;
 			this.labelMapSize.Text = "Размеры карты (м):";
 			// 
-			// textBoxTopGps
-			// 
-			this.textBoxTopGps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxTopGps.Location = new System.Drawing.Point(916, 401);
-			this.textBoxTopGps.Name = "textBoxTopGps";
-			this.textBoxTopGps.ReadOnly = true;
-			this.textBoxTopGps.Size = new System.Drawing.Size(57, 20);
-			this.textBoxTopGps.TabIndex = 18;
-			// 
-			// textBoxLeftGps
-			// 
-			this.textBoxLeftGps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxLeftGps.Location = new System.Drawing.Point(885, 427);
-			this.textBoxLeftGps.Name = "textBoxLeftGps";
-			this.textBoxLeftGps.ReadOnly = true;
-			this.textBoxLeftGps.Size = new System.Drawing.Size(57, 20);
-			this.textBoxLeftGps.TabIndex = 19;
-			// 
-			// textBoxRightGps
-			// 
-			this.textBoxRightGps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxRightGps.Location = new System.Drawing.Point(953, 427);
-			this.textBoxRightGps.Name = "textBoxRightGps";
-			this.textBoxRightGps.ReadOnly = true;
-			this.textBoxRightGps.Size = new System.Drawing.Size(57, 20);
-			this.textBoxRightGps.TabIndex = 20;
-			// 
-			// textBoxBottomGps
-			// 
-			this.textBoxBottomGps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxBottomGps.Location = new System.Drawing.Point(916, 453);
-			this.textBoxBottomGps.Name = "textBoxBottomGps";
-			this.textBoxBottomGps.ReadOnly = true;
-			this.textBoxBottomGps.Size = new System.Drawing.Size(57, 20);
-			this.textBoxBottomGps.TabIndex = 21;
-			// 
 			// labelTilesRect
 			// 
 			this.labelTilesRect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelTilesRect.AutoSize = true;
-			this.labelTilesRect.Location = new System.Drawing.Point(882, 572);
+			this.labelTilesRect.Location = new System.Drawing.Point(954, 595);
 			this.labelTilesRect.Name = "labelTilesRect";
 			this.labelTilesRect.Size = new System.Drawing.Size(47, 13);
 			this.labelTilesRect.TabIndex = 22;
@@ -418,7 +391,7 @@ namespace orbis_terrarum
 			// 
 			this.labelMetPerPix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelMetPerPix.AutoSize = true;
-			this.labelMetPerPix.Location = new System.Drawing.Point(882, 497);
+			this.labelMetPerPix.Location = new System.Drawing.Point(954, 520);
 			this.labelMetPerPix.Name = "labelMetPerPix";
 			this.labelMetPerPix.Size = new System.Drawing.Size(102, 13);
 			this.labelMetPerPix.TabIndex = 23;
@@ -438,25 +411,81 @@ namespace orbis_terrarum
 			this.mapCenteroolStripMenuItem.Text = "Центр карты";
 			this.mapCenteroolStripMenuItem.Click += new System.EventHandler(this.mapCenteroolStripMenuItem_Click);
 			// 
+			// comboBoxPreset
+			// 
+			this.comboBoxPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.comboBoxPreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBoxPreset.FormattingEnabled = true;
+			this.comboBoxPreset.Location = new System.Drawing.Point(0, 19);
+			this.comboBoxPreset.Name = "comboBoxPreset";
+			this.comboBoxPreset.Size = new System.Drawing.Size(125, 21);
+			this.comboBoxPreset.TabIndex = 24;
+			this.comboBoxPreset.SelectedIndexChanged += new System.EventHandler(this.comboBoxPreset_SelectedIndexChanged);
+			// 
+			// buttonAddPreset
+			// 
+			this.buttonAddPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonAddPreset.Location = new System.Drawing.Point(6, 46);
+			this.buttonAddPreset.Name = "buttonAddPreset";
+			this.buttonAddPreset.Size = new System.Drawing.Size(111, 23);
+			this.buttonAddPreset.TabIndex = 25;
+			this.buttonAddPreset.Text = "Новый...";
+			this.buttonAddPreset.UseVisualStyleBackColor = true;
+			this.buttonAddPreset.Click += new System.EventHandler(this.buttonAddPreset_Click);
+			// 
+			// buttonDeletePreset
+			// 
+			this.buttonDeletePreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonDeletePreset.Location = new System.Drawing.Point(6, 106);
+			this.buttonDeletePreset.Name = "buttonDeletePreset";
+			this.buttonDeletePreset.Size = new System.Drawing.Size(111, 23);
+			this.buttonDeletePreset.TabIndex = 26;
+			this.buttonDeletePreset.Text = "Удалить";
+			this.buttonDeletePreset.UseVisualStyleBackColor = true;
+			this.buttonDeletePreset.Click += new System.EventHandler(this.buttonDeletePreset_Click);
+			// 
+			// groupBox3
+			// 
+			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.buttonEditPreset);
+			this.groupBox3.Controls.Add(this.comboBoxPreset);
+			this.groupBox3.Controls.Add(this.buttonAddPreset);
+			this.groupBox3.Controls.Add(this.buttonDeletePreset);
+			this.groupBox3.Location = new System.Drawing.Point(957, 279);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(125, 139);
+			this.groupBox3.TabIndex = 27;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Наборы";
+			// 
+			// buttonEditPreset
+			// 
+			this.buttonEditPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonEditPreset.Location = new System.Drawing.Point(6, 77);
+			this.buttonEditPreset.Name = "buttonEditPreset";
+			this.buttonEditPreset.Size = new System.Drawing.Size(111, 23);
+			this.buttonEditPreset.TabIndex = 27;
+			this.buttonEditPreset.Text = "Редактировать...";
+			this.buttonEditPreset.UseVisualStyleBackColor = true;
+			this.buttonEditPreset.Click += new System.EventHandler(this.buttonEditPreset_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1022, 668);
+			this.ClientSize = new System.Drawing.Size(1094, 720);
 			this.ContextMenuStrip = this.contextMenuStrip1;
-			this.Controls.Add(this.labelMetPerPix);
-			this.Controls.Add(this.labelTilesRect);
-			this.Controls.Add(this.textBoxBottomGps);
-			this.Controls.Add(this.textBoxRightGps);
-			this.Controls.Add(this.textBoxLeftGps);
-			this.Controls.Add(this.textBoxTopGps);
-			this.Controls.Add(this.labelMapSize);
-			this.Controls.Add(this.buttonAbout);
+			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.buttonSaveMap);
+			this.Controls.Add(this.buttonDownload);
+			this.Controls.Add(this.labelMetPerPix);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.statusStrip1);
+			this.Controls.Add(this.labelTilesRect);
+			this.Controls.Add(this.labelMapSize);
 			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.buttonAbout);
+			this.Controls.Add(this.buttonSaveMap);
 			this.Name = "MainForm";
 			this.Text = "Orbis Terrarum";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -472,6 +501,7 @@ namespace orbis_terrarum
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.contextMenuStrip1.ResumeLayout(false);
+			this.groupBox3.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -505,14 +535,16 @@ namespace orbis_terrarum
 		private System.Windows.Forms.ComboBox comboBoxLat;
 		private System.Windows.Forms.ComboBox comboBoxLon;
 		private System.Windows.Forms.Label labelMapSize;
-		private System.Windows.Forms.TextBox textBoxTopGps;
-		private System.Windows.Forms.TextBox textBoxLeftGps;
-		private System.Windows.Forms.TextBox textBoxRightGps;
-		private System.Windows.Forms.TextBox textBoxBottomGps;
 		private System.Windows.Forms.Label labelTilesRect;
 		private System.Windows.Forms.Label labelMetPerPix;
-		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem mapCenteroolStripMenuItem;
+		private System.Windows.Forms.ComboBox comboBoxPreset;
+		private System.Windows.Forms.Button buttonAddPreset;
+		private System.Windows.Forms.Button buttonDeletePreset;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusDimensions;
+		private System.Windows.Forms.Button buttonEditPreset;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 

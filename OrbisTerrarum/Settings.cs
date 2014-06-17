@@ -58,16 +58,16 @@ public class MapSize
 	}
 }
 
-public class SettingsGpsPoint
+public class GpsPoint
 {
 	private string _lat;
 	private string _lon;
 
-	public SettingsGpsPoint()
+	public GpsPoint()
 	{
 	}
 
-	public SettingsGpsPoint(string lat, string lon)
+	public GpsPoint(string lat, string lon)
 	{
 		_lat = lat.Trim();
 		_lon = lon.Trim();
@@ -86,14 +86,31 @@ public class SettingsGpsPoint
 	}
 }
 
+public class Preset
+{
+	public string Title { get; set; }
+	public string sizeMeters { get; set; }
+	public int Layer { get; set; }
+	public GpsPoint latLon { get; set; }
+	public DateTime date { get; set; }
+	public MapSize mapSize { get; set; }
+
+	public Preset()
+	{
+		latLon = new GpsPoint();
+		mapSize = new MapSize();
+	}
+}
+
 public class Settings
 {
 	private MapSize _mapSize;
 	private string _filename;
 	private int _zoom;
-	private SettingsGpsPoint _centralPoint;
-
+	private GpsPoint _centralPoint;
 	private Point _tileSize;
+	public List<Preset> Preset { get; set; }
+	public int ActivePreset { get; set; }
 
 	public MapSize MapSize
 	{
@@ -101,7 +118,7 @@ public class Settings
 		set { _mapSize = value; }
 	}
 
-	public SettingsGpsPoint CentralPoint
+	public GpsPoint CentralPoint
 	{
 		get { return _centralPoint; }
 		set { _centralPoint = value; }
@@ -115,6 +132,7 @@ public class Settings
 
 	public Settings()
 	{
+		Preset = new List<Preset>();
 	}
 
 	public Settings(string fileName, Point tileSize)
@@ -199,8 +217,9 @@ public class Settings
 	private void SetDefault()
 	{
 		this._zoom = 15;
-		this._centralPoint = new SettingsGpsPoint("1", "1");
+		this._centralPoint = new GpsPoint("1", "1");
 		this._mapSize = new MapSize(_tileSize.X, _tileSize.Y);
+		this.Preset = new List<Preset>();
 	}
 
 	private void CopyFrom(Settings Obj)
@@ -209,8 +228,11 @@ public class Settings
 		// Нового объекта может не быть в старой версии настроек
 		if (Obj.CentralPoint != null)
 			this.CentralPoint = Obj.CentralPoint;
-		if(Obj.MapSize != null)
+		if (Obj.MapSize != null)
 			this.MapSize = Obj.MapSize;
+		if (Obj.Preset != null)
+			this.Preset = Obj.Preset;
+		this.ActivePreset = Obj.ActivePreset;
 	}
 }
 

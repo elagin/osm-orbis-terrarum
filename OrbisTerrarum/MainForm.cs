@@ -103,6 +103,9 @@ namespace orbis_terrarum
 			pictureBox1.Width = settings.MapSize.Width;
 			pictureBox1.Height = settings.MapSize.Height;
 
+			fillPreset();
+			buttonDeletePreset.Enabled = comboBoxPreset.Items.Count > 0;
+
 			//Всегда в конце
 			calcMapProperty();
 		}
@@ -213,10 +216,9 @@ namespace orbis_terrarum
 					{
 						createPlace();
 						showMapSize();
-						textBoxTopGps.Text = tiles.gpsRect.Y.ToString();
-						textBoxLeftGps.Text = tiles.gpsRect.X.ToString();
-						textBoxRightGps.Text = (tiles.gpsRect.X + tiles.gpsRect.Height).ToString();
-						textBoxBottomGps.Text = (tiles.gpsRect.Y + tiles.gpsRect.Width).ToString();
+
+						string mapDimensions = String.Format("[{0} x {1} | {2} x {3}]", tiles.gpsRect.Y, tiles.gpsRect.X, tiles.gpsRect.Y + tiles.gpsRect.Width, (tiles.gpsRect.X + tiles.gpsRect.Height));
+						toolStripStatusDimensions.Text = mapDimensions;
 
 						tiles.mapScale = (double)tiles.mapSize.Width / getBoxMapWidth();
 						labelMetPerPix.Text = String.Format("Метров на пиксел\n {0:N2}", tiles.mapScale);
@@ -430,6 +432,7 @@ namespace orbis_terrarum
 			settings.Zoom = getZoom();
 			settings.MapSize.Width = getBoxMapWidth();
 			settings.MapSize.Height = getBoxMapHeight();
+			savePreset();
 		}
 
 		/// <summary>
@@ -506,6 +509,26 @@ namespace orbis_terrarum
 			}
 		}
 
+				/// <summary>
+		/// Класс для хранения элементов ComboBox.</summary>
+		private class ComboItemPreset
+		{
+			public string Name;
+			public Preset Value;
+
+			public ComboItemPreset(string name, Preset value)
+			{
+				Name = name; Value = value;
+			}
+
+			public override string ToString()
+			{
+				/// <summary>
+				///  Generates the text shown in the combo box.</summary>
+				return Name;
+			}
+		}
+
 		private void buttonAbout_Click(object sender, EventArgs e)
 		{
 			using (FormAbout about = new FormAbout())
@@ -517,11 +540,119 @@ namespace orbis_terrarum
 		private void mapCenteroolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Point tmp = pictureBox1.PointToClient(System.Windows.Forms.Control.MousePosition);
+
 			float xPos = ((tiles.gpsRect.Width / pictureBox1.Width) * tmp.X) + tiles.gpsRect.Left;
 			float yPos = ((tiles.gpsRect.Height / pictureBox1.Height) * tmp.Y) + tiles.gpsRect.Top;
 
 			textBoxLat.Text = yPos.ToString();
 			textBoxLon.Text = xPos.ToString();
+		}
+
+		/// <summary>
+		/// Загружает пресеты в ComcomboBoxPreset.</summary>
+		private void fillPreset()
+		{
+			comboBoxPreset.Items.Clear();
+			foreach(Preset item in settings.Preset)
+			{
+				string text = String.Format("{0}", item.Title);
+				comboBoxPreset.Items.Add(new ComboItemPreset(text, item));
+			}
+			if (comboBoxPreset.Items.Count > 0)
+			{
+				comboBoxPreset.SelectedIndex = settings.ActivePreset;
+			}
+		}
+
+		/// <summary>
+		/// Сохраняет пресеты.</summary>
+		private void savePreset()
+		{
+			settings.Preset.Clear();
+			foreach (ComboItemPreset item in comboBoxPreset.Items)
+			{
+				settings.Preset.Add(item.Value);
+			}
+			settings.ActivePreset = comboBoxPreset.SelectedIndex;
+		}
+
+		/// <summary>
+		/// Открывает диалог для добавления пресета.</summary>
+		private void buttonAddPreset_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				Tools.getDeg(textBoxLat.Text);
+				Tools.getDeg(textBoxLon.Text);
+				
+				Preset newSet = new Preset();
+				newSet.date = DateTime.Now;
+				newSet.latLon = new GpsPoint(textBoxLat.Text, textBoxLon.Text);
+				newSet.Layer = getZoom();
+				newSet.sizeMeters = "0000";
+				newSet.Title = "Новый";
+				newSet.mapSize.Width = Convert.ToInt32(textBoxMapWidth.Text);
+				newSet.mapSize.Height = Convert.ToInt32(textBoxMapHeight.Text);
+
+				using (FormPresets presetForm = new FormPresets(ref settings, newSet))
+				{
+					DialogResult resDlg = presetForm.ShowDialog();
+					if (resDlg == DialogResult.OK)
+					{
+						fillPreset();
+						buttonDeletePreset.Enabled = comboBoxPreset.Items.Count > 0;
+						comboBoxPreset.SelectedIndex = presetForm.select;
+					}
+				}
+			}
+			catch (FormatException ex)
+			{
+				string msg = "Произошла ошибка при преобразовании: " + ex.Message + ". Пожалуйста, проверьте формат.";
+				var result = MessageBox.Show(msg, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			catch (Exception ex)
+			{
+				const string caption = "Ошибка при работе окна пресетов";
+				var result = MessageBox.Show(ex.Message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void buttonDeletePreset_Click(object sender, EventArgs e)
+		{
+			// Порядок двух строк менять нельзя!
+			settings.Preset.RemoveAt(comboBoxPreset.SelectedIndex);
+			comboBoxPreset.Items.RemoveAt(comboBoxPreset.SelectedIndex);
+
+			if (comboBoxPreset.Items.Count > 0)
+			{
+				comboBoxPreset.SelectedIndex = 0;
+			}
+			buttonDeletePreset.Enabled = comboBoxPreset.Items.Count > 0;
+		}
+
+		private void comboBoxPreset_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			Preset tmp = settings.Preset[comboBoxPreset.SelectedIndex];
+			textBoxLat.Text = tmp.latLon.Lat;
+			textBoxLon.Text = tmp.latLon.Lon;
+			textBoxMapWidth.Text = tmp.mapSize.Width.ToString();
+			textBoxMapHeight.Text = tmp.mapSize.Height.ToString();
+			comboBoxZoom.SelectedIndex = tmp.Layer - 1;
+		}
+
+		private void buttonEditPreset_Click(object sender, EventArgs e)
+		{
+			using (FormPresets presetForm = new FormPresets(ref settings, null, comboBoxPreset.SelectedIndex))
+			{
+				DialogResult resDlg = presetForm.ShowDialog();
+				if (resDlg == DialogResult.OK)
+				{
+					fillPreset();
+					buttonDeletePreset.Enabled = comboBoxPreset.Items.Count > 0;
+					comboBoxPreset.SelectedIndex = presetForm.select;
+				}
+			}
+
 		}
 	}
 }
